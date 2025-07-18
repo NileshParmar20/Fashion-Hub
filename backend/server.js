@@ -10,6 +10,7 @@ import passport from "passport";
 import "./config/google_login.js";
 import googleAuthRoute from "./routes/google-auth.js"; 
 import productRoutes from "./routes/productRoute.js"
+import cartRoutes from "./routes/cartRoute.js";
 
 
 
@@ -40,6 +41,8 @@ app.use("/auth", googleAuthRoute);
 app.use("/api/v1/user", userRoutes);
 
 app.use("/api/v1/product",productRoutes);
+
+app.use("/api/v1/cart",cartRoutes);
 
 
 app.use(express.static("public"))
