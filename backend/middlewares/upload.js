@@ -1,11 +1,10 @@
-// middlewares/upload.js
 import multer from "multer";
 import path from "path";
 
-// Set storage config
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // You can also use ./public/uploads/
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
     const uniqueName = `${Date.now()}-${file.originalname}`;
@@ -13,7 +12,7 @@ const storage = multer.diskStorage({
   }
 });
 
-// Filter only image files
+
 const fileFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase();
   if (ext === ".jpg" || ext === ".jpeg" || ext === ".png") {

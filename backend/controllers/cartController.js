@@ -1,9 +1,9 @@
 import { User } from "../models/User.js";
 import { Product } from "../models/Product.js";
 
-// Add to Cart
+
 export const addToCart = async (req, res) => {
-const userId = req.user._id; // or req.user.userId if using token directly
+  const userId = req.user._id;
   const { productId, quantity } = req.body;
 
   try {
@@ -26,7 +26,7 @@ const userId = req.user._id; // or req.user.userId if using token directly
   }
 };
 
-// Remove from Cart
+
 export const removeFromCart = async (req, res) => {
   const userId = req.user._id;
   const { productId } = req.body;
@@ -41,7 +41,7 @@ export const removeFromCart = async (req, res) => {
   }
 };
 
-// View Cart
+
 export const viewCart = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate("cart.product");

@@ -1,6 +1,6 @@
 import { Product } from "../models/Product.js";
 import { upload } from "../middlewares/upload.js";
-import { Category } from "../models/Category.js"; 
+import { Category } from "../models/Category.js";
 
 
 
@@ -49,29 +49,29 @@ export const getProduct = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
-  try {
-    const updatedFields = req.body;
+    try {
+        const updatedFields = req.body;
 
-   
-    if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(file => `/uploads/${file.filename}`);
-      updatedFields.images = newImages;
+
+        if (req.files && req.files.length > 0) {
+            const newImages = req.files.map(file => `/uploads/${file.filename}`);
+            updatedFields.images = newImages;
+        }
+
+        const product = await Product.findByIdAndUpdate(req.params.id, updatedFields, {
+            new: true,
+        });
+
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        res.status(200).json({ success: true, product, message: "Product updated" });
+        console.log(product);
+
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
-
-    const product = await Product.findByIdAndUpdate(req.params.id, updatedFields, {
-      new: true,
-    });
-
-    if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
-    }
-
-    res.status(200).json({ success: true, product, message: "Product updated" });
-    console.log(product);
-    
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
 };
 
 export const deleteProduct = async (req, res) => {
