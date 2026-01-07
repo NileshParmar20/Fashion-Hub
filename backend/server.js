@@ -1,18 +1,24 @@
-import express from "express";
+// 1. First, import and initialize dotenv
 import { config } from "dotenv";
-import { connectDB } from "./config/db.js";
+config({ path: ".env" }); 
+
+// 2. Now import express and other external libraries
+import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/userRoute.js";
 import cors from "cors";
 import passport from "passport";
-import "./config/google_login.js";
+
+// 3. Finally, import your local files that depend on environment variables
+import { connectDB } from "./config/db.js";
+import "./config/google_login.js"; // This will now correctly find process.env variables
+import userRoutes from "./routes/userRoute.js";
 import googleAuthRoute from "./routes/google-auth.js";
 import productRoutes from "./routes/productRoute.js";
 import cartRoutes from "./routes/cartRoute.js";
 
 const app = express();
-config({ path: ".env" });
+
 
 // Database Connection
 connectDB();
