@@ -6,7 +6,7 @@ export const isAdmin = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT);
-        if (!decoded.isAdmin) return res.status(403).json({ message: "Admins only" });
+        if (decoded.role !== 'admin') return res.status(403).json({ message: "Admins only" });
         req.user = decoded;
         next();
     } catch (err) {

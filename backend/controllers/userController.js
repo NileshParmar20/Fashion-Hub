@@ -1,7 +1,6 @@
 import { User } from "../models/User.js"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-import { isAdmin } from "../middlewares/isadmin.js";
 
 export const register = async (req, res) => {
     const { name, email, password } = req.body;
@@ -56,7 +55,9 @@ export const adminlogin = async (req, res) => {
     if (!validPass)
         return res.status(401).json({ message: "Incorrect credentials" });
 
-    const token = jwt.sign({ userId: admin._id, isAdmin: true }, process.env.JWT, {
+    const token = jwt.sign(
+        { userId: admin._id, role: admin.role }, 
+        process.env.JWT, {
         expiresIn: "1d"
     });
 
