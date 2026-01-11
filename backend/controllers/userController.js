@@ -38,7 +38,17 @@ export const login = async (req, res) => {
         expiresIn: "1day"
     });
 
-    res.status(200).json({ message: `Welcome ${user.name}`, token, success: true });
+    res.status(200).json({
+        success: true,
+        message: `Welcome ${user.name}`,
+        token,
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        },
+    });
 
 }
 
@@ -56,7 +66,7 @@ export const adminlogin = async (req, res) => {
         return res.status(401).json({ message: "Incorrect credentials" });
 
     const token = jwt.sign(
-        { userId: admin._id, role: admin.role }, 
+        { userId: admin._id, role: admin.role },
         process.env.JWT, {
         expiresIn: "1d"
     });

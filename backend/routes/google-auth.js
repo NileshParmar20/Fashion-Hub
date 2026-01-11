@@ -10,7 +10,7 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: "/profile",
+        successRedirect: "/",
         failureRedirect: "/login",
 
     }),
@@ -22,7 +22,7 @@ router.get(
         );
 
         res.cookie("token", token, { httpOnly: true, secure: true });
-        res.redirect("/profile");
+        res.redirect("/");
     }
 );
 

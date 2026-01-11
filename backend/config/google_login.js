@@ -1,11 +1,10 @@
+import "dotenv/config";
+
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20"; // Updated Import
 import { User } from "../models/User.js";
 import bcrypt from "bcryptjs";
 
-
-console.log("DEBUG: Checking ENV Variables...");
-console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "FOUND" : "NOT FOUND / UNDEFINED");
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
