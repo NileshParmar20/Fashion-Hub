@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login");
+    navigate("/");
     setOpen(false);
   };
 
@@ -33,19 +33,20 @@ const Navbar = () => {
 
           {!isAuthenticated ? (
             <>
-              <Link to="/login" className="border border-[#D4AF37] px-4 py-1 rounded hover:bg-[#D4AF37] hover:text-black">
+              <Link to="/login" className="border border-[#D4AF37] px-4 py-1 cursor-pointer active:scale-95 rounded hover:bg-[#D4AF37] hover:text-black">
                 Login
               </Link>
-              <Link to="/register" className="bg-[#D4AF37] text-black px-4 py-1 rounded">
+              <Link to="/register" className="bg-[#D4AF37] text-black cursor-pointer active:scale-95 px-4 py-1 rounded">
                 Sign Up
               </Link>
+
             </>
           ) : (
             <>
-              <span className="text-sm">Hi, {user?.name}</span>
+            <Link  to="/profile" className="hover:text-white">Profile</Link>
               <button
                 onClick={handleLogout}
-                className="border border-red-500 text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white"
+                className="border border-red-500 cursor-pointer active:scale-95 text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white"
               >
                 Logout
               </button>

@@ -4,14 +4,21 @@ import { useNavigate } from "react-router-dom";
 import axios from "../utils/axiosInstance";
 import { loginSuccess } from "../features/auth/authSlice";
 import Navbar from "../components/Navbar";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -72,15 +79,16 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className="w-full bg-[#D4AF37] text-black py-2 rounded mb-3">
+          <button className="w-full bg-[#D4AF37]  hover:bg-#D4AF37 cursor-pointer active:scale-95 text-black py-2 rounded mb-3">
             Login
           </button>
 
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full bg-red-500 py-2 rounded"
+            className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 cursor-pointer active:scale-95 font-semibold py-3 rounded-xl flex items-center justify-center gap-3 transition-all"
           >
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-5 h-5" alt="Google" />
             Login with Google
           </button>
         </form>

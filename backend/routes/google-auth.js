@@ -26,7 +26,7 @@ router.get(
             httpOnly: true,
             secure: process.env.NODE_ENV === "production"
         });
-        res.redirect("http://localhost:3000/");
+        res.redirect(`http://localhost:5173/google-success?token=${token}`);
     }
 );
 

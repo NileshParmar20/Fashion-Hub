@@ -9,6 +9,8 @@ import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import GoogleSuccess from "./pages/GoogleSuccess";
+
 
 const App = () => {
   return (
@@ -20,10 +22,9 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/google-success" element={<GoogleSuccess />} />
 
         {/* User Protected Routes */}
-        
-
         <Route
           path="/profile"
           element={
