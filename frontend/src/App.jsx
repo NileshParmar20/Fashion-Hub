@@ -33,7 +33,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
+        
         {/* Admin Protected Routes */}
         <Route
           path="/admin"
