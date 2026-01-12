@@ -1,6 +1,7 @@
 import express from "express";
 import { User } from "../models/User.js"
 import passport from "passport";
+import jwt from "jsonwebtoken";
 
 
 const router = express.Router();
@@ -10,19 +11,22 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: "/profile",
         failureRedirect: "/login",
+        session: true,
 
     }),
-    (req,res)=>{
+    (req, res) => {
         const token = jwt.sign(
             { userId: req.user._id, role: req.user.role },
             process.env.JWT,
             { expiresIn: "1d" }
         );
 
-        res.cookie("token", token, { httpOnly: true, secure: true });
-        res.redirect("/profile");
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production"
+        });
+        res.redirect("http://localhost:3000/");
     }
 );
 

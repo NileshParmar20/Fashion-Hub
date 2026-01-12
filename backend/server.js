@@ -8,6 +8,7 @@ import passport from "passport";
 // Local imports
 import { connectDB } from "./config/db.js";
 import "./config/google_login.js";
+import sessionMiddleware from "./middlewares/session.js"; 
 import userRoutes from "./routes/userRoute.js";
 import googleAuthRoute from "./routes/google-auth.js";
 import productRoutes from "./routes/productRoute.js";
@@ -19,12 +20,16 @@ const app = express();
 connectDB();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(sessionMiddleware);
 app.use(passport.initialize());
-app.use(express.static("public"));
+app.use(passport.session());
 
 // Routes
 app.use("/auth", googleAuthRoute);
