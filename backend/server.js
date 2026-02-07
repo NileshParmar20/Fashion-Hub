@@ -13,6 +13,7 @@ import userRoutes from "./routes/userRoute.js";
 import googleAuthRoute from "./routes/google-auth.js";
 import productRoutes from "./routes/productRoute.js";
 import cartRoutes from "./routes/cartRoute.js";
+import orderRoutes from "./routes/orderRoute.js";
 
 const app = express();
 
@@ -31,11 +32,22 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Static files for uploads
+app.use('/uploads', express.static('uploads'));
+
 // Routes
 app.use("/auth", googleAuthRoute);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
+app.use("/api/v1/order", orderRoutes);
+
+// API v2 routes (without v1 prefix for frontend compatibility)
+// This allows both old and new API calls to work
+app.use("/api/user", userRoutes);
+app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
 
 // Health check
 app.get("/health", (req, res) => {
@@ -45,8 +57,18 @@ app.get("/health", (req, res) => {
   });
 });
 
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    path: req.path
+  });
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
+  console.error('Error:', err);
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || "Internal Server Error",

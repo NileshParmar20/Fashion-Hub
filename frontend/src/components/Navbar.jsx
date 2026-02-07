@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import gsap from "gsap"; // Added
 import { useGSAP } from "@gsap/react"; // Added
+import logo from "../assets/logo.png";
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -45,13 +47,14 @@ const Navbar = () => {
 
         {/* Logo */}
         <Link to="/" className="nav-link flex items-center gap-2">
-          <img src="/logo.png" className="h-10 w-10" alt="logo" />
+          <img src={logo} className="h-10 w-10" alt="logo" />
           <span className="text-xl font-bold tracking-wide">Fashion Hub</span>
         </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6">
           <Link to="/" className="nav-link hover:text-white">Home</Link>
+          <Link to="/products" className="nav-link hover:text-white">Shop</Link>
           <Link to="/about" className="nav-link hover:text-white">About</Link>
           <Link to="/contact" className="nav-link hover:text-white">Contact</Link>
           {isAuthenticated && user?.role === "admin" && (
@@ -71,6 +74,9 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              <Link to="/cart" className="nav-link hover:text-white relative">
+                🛒 Cart
+              </Link>
               <Link to="/profile" className="nav-link hover:text-white">Profile</Link>
               <button
                 onClick={handleLogout}
@@ -95,6 +101,7 @@ const Navbar = () => {
       {open && (
         <div className="mobile-menu md:hidden bg-[#1a1a1a] px-4 pb-4 space-y-3 overflow-hidden">
           <Link onClick={() => setOpen(false)} to="/" className="block">Home</Link>
+          <Link onClick={() => setOpen(false)} to="/products" className="block">Shop</Link>
           <Link onClick={() => setOpen(false)} to="/about" className="block">About</Link>
           <Link onClick={() => setOpen(false)} to="/contact" className="block">Contact</Link>
 
@@ -106,6 +113,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              <Link onClick={() => setOpen(false)} to="/cart" className="block">🛒 Cart</Link>
               <Link onClick={() => setOpen(false)} to="/profile" className="block">Profile</Link>
               <button onClick={handleLogout} className="text-red-500">Logout</button>
             </>

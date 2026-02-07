@@ -8,3 +8,9 @@
   background: black;
   border: 1px solid #374151;
 }
+
+@layer components {
+  .modal-input {
+    @apply w-full bg-[#0F0F0F] border border-[#374151] p-3 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-all;
+  }
+}
