@@ -1,9 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Helper function to safely parse user data
+const getUserFromStorage = () => {
+  try {
+    const userStr = localStorage.getItem("user");
+    return userStr ? JSON.parse(userStr) : null;
+  } catch (error) {
+    console.error("Error parsing user from storage:", error);
+    localStorage.removeItem("user");
+    return null;
+  }
+};
+
 const initialState = {
- user: JSON.parse(localStorage.getItem("user")) || null,
-  token: localStorage.getItem("token"),
-  role: localStorage.getItem("role"),
+  user: getUserFromStorage(),
+  token: localStorage.getItem("token") || null,
+  role: localStorage.getItem("role") || null,
   isAuthenticated: !!localStorage.getItem("token"),
 };
 
@@ -12,14 +24,29 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.role = action.payload.role;
+      const { user, token, role } = action.payload;
+      
+      state.user = user;
+      state.token = token;
+      state.role = role || user?.role || "user";
       state.isAuthenticated = true;
 
-      localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("role", action.payload.role);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      // Save to localStorage
+      try {
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", state.role);
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (error) {
+        console.error("Error saving to localStorage:", error);
+      }
+    },
+    updateUser: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
+      try {
+        localStorage.setItem("user", JSON.stringify(state.user));
+      } catch (error) {
+        console.error("Error updating user in localStorage:", error);
+      }
     },
     logout: (state) => {
       state.user = null;
@@ -32,5 +59,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logout } = authSlice.actions;
+export const { loginSuccess, updateUser, logout } = authSlice.actions;
 export default authSlice.reducer;

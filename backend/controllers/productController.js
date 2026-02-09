@@ -29,10 +29,46 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
     try {
-        const products = await Product.find()
+        const { category, search, minPrice, maxPrice, limit, sort } = req.query;
+        let query = {};
+
+        // Search by name (case-insensitive)
+        if (search) {
+            query.name = { $regex: search, $options: "i" };
+        }
+
+        // Filter by category
+        if (category) {
+            query.category = category;
+        }
+
+        // Filter by price range
+        if (minPrice || maxPrice) {
+            query.price = {};
+            if (minPrice) query.price.$gte = Number(minPrice);
+            if (maxPrice) query.price.$lte = Number(maxPrice);
+        }
+
+        let apiQuery = Product.find(query);
+
+        // Sorting
+        if (sort === "latest") {
+            apiQuery = apiQuery.sort({ createdAt: -1 });
+        } else if (sort === "price-low") {
+            apiQuery = apiQuery.sort({ price: 1 });
+        } else if (sort === "price-high") {
+            apiQuery = apiQuery.sort({ price: -1 });
+        }
+
+        // Limiting (Critical for Home Page)
+        if (limit) {
+            apiQuery = apiQuery.limit(Number(limit));
+        }
+
+        const products = await apiQuery;
         res.status(200).json({ success: true, products });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message })
+        res.status(500).json({ success: false, error: error.message });
     }
 };
 

@@ -1,21 +1,28 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import AdminDashboard from "./pages/AdminDashboard";
-import Profile from "./pages/Profile";
+// Public Pages
+import Home from "@/pages/public/Home";
+import About from "@/pages/public/About";
+import Contact from "@/pages/public/Contact";
+import Login from "@/pages/public/Login";
+import Register from "@/pages/public/Register";
+import GoogleSuccess from "@/pages/public/GoogleSuccess";
+import ProductBrowse from "@/pages/public/ProductBrowse";
+import ProductDetails from "@/pages/public/ProductDetails";
+import OrderSuccess from "@/pages/public/OrderSuccess";
 
-import ProtectedRoute from "./components/ProtectedRoute";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import GoogleSuccess from "./pages/GoogleSuccess";
-import ProductBrowse from "./pages/ProductBrowse";
-import ProductDetails from "./pages/ProductDetails";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import OrderSuccess from "./pages/OrderSuccess";
-import UPIPayment from "./pages/UPIPayment";
+// Protected Pages
+import Cart from "@/pages/protected/Cart";
+import Checkout from "@/pages/protected/Checkout";
+import Profile from "@/pages/protected/Profile";
+import UpiPayment from "@/pages/protected/UpiPayment";
+import OrderDetails from "@/pages/protected/OrderDetails";
+
+// Admin Pages
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+
+// Components
+import ProtectedRoute from "@/components/common/ProtectedRoute";
 
 const App = () => {
   return (
@@ -32,16 +39,7 @@ const App = () => {
         {/* Product Routes */}
         <Route path="/products" element={<ProductBrowse />} />
         <Route path="/product/:id" element={<ProductDetails />} />
-
-        {/* User Protected Routes */}
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/order-success" element={<OrderSuccess />} />
 
         {/* Cart & Checkout Routes */}
         <Route path="/cart" element={<Cart />} />
@@ -57,12 +55,29 @@ const App = () => {
           path="/upi-payment"
           element={
             <ProtectedRoute>
-              <UPIPayment />
+              <UpiPayment />
             </ProtectedRoute>
           }
         />
-        <Route path="/order-success" element={<OrderSuccess />} />
-        
+
+        {/* User Protected Routes */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+          <Route
+            path="/order/:orderId"
+            element={
+              <ProtectedRoute>
+                <OrderDetails />
+              </ProtectedRoute>
+            }
+          />
+
         {/* Admin Protected Routes */}
         <Route
           path="/admin"
